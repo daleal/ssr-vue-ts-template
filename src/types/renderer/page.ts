@@ -1,7 +1,8 @@
-import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client/router';
+import type { PageContextBuiltIn } from 'vite-plugin-ssr';
 
 export type PageContext = {
   Page: object
-  pageProps?: Record<string, unknown>
   urlPathname: string
-} & PageContextBuiltInClient;
+  pageProps?: Record<string, unknown>
+  redirectTo?: string
+} & PageContextBuiltIn;

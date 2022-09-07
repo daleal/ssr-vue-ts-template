@@ -8,9 +8,7 @@ declare module '*.vue' {
 }
 
 interface ImportMetaEnv {
-  readonly API_HOST?: string
-  readonly NODE_ENV?: string
-  readonly PORT?: string
+  readonly VITE_API_HOST?: string
 }
 
 interface ImportMeta {

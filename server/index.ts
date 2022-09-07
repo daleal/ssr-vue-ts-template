@@ -1,11 +1,10 @@
+import path from 'path';
 import express from 'express';
 import compression from 'compression';
 import sirv from 'sirv';
+import { fileURLToPath } from 'url';
 import { createServer } from 'vite';
 import { renderPage } from 'vite-plugin-ssr';
-
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url); // eslint-disable-line no-underscore-dangle
 
@@ -37,12 +36,16 @@ const startServer = async () => {
   app.get('*', async (req, res, next) => { // eslint-disable-line consistent-return
     const pageContextInit = { urlOriginal: req.originalUrl };
     const pageContext = await renderPage(pageContextInit);
-    const { httpResponse } = pageContext;
-    if (!httpResponse) {
+    // @ts-expect-error: pageContext typing is deficient
+    const { httpResponse, redirectTo } = pageContext;
+    if (redirectTo) {
+      res.redirect(307, redirectTo);
+    } else if (!httpResponse) {
       return next();
+    } else {
+      const { body, statusCode, contentType } = httpResponse;
+      res.status(statusCode).type(contentType).send(body);
     }
-    const { body, statusCode, contentType } = httpResponse;
-    res.status(statusCode).type(contentType).send(body);
   });
 
   const port = process.env.PORT || 3000;

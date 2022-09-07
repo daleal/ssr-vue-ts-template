@@ -6,7 +6,7 @@ import { createHead, renderHeadToString } from '@vueuse/head';
 import { createApp } from './main';
 import type { PageContext } from '../src/types/renderer/page';
 
-export const passToClient = ['pageProps', 'urlPathname'];
+export const passToClient = ['pageProps', 'urlPathname', 'routeParams'];
 
 const defaultHead = {
   title: 'SSR Vue + TS',
